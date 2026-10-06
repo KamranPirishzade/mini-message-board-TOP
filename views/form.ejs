@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add new message</title>
+  </head>
+  <body>
+    <%- include("header") %>
+    <form method="POST" action="/new">
+      <label for="username">Enter username:</label>
+      <input
+        type="text"
+        id="username"
+        name="username"
+        placeholder="John Doe"
+        required
+      />
+      <label for="message">Message:</label>
+      <input
+        type="text"
+        id="message"
+        name="message"
+        placeholder="Hello guys"
+        required
+      />
+      <button type="submit">Send message</button>
+    </form>
+  </body>
+</html>
