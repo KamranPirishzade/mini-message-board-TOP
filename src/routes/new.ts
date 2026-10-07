@@ -9,7 +9,14 @@ router.get("/", (req: Request, res: Response) => {
 });
 
 router.post("/", (req: Request, res: Response) => {
-  const { username, message } = req.body;
+  const username = req.body.username?.trim();
+  const message = req.body.message?.trim();
+
+  if (!username || !message) {
+    res.status(400).send("Username and message are required");
+    return;
+  }
+
   messages.push({
     id: crypto.randomUUID(),
     user: username,
