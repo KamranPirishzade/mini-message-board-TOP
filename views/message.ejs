@@ -10,6 +10,8 @@
 
     <h2><%= user %></h2>
     <p><%= text %></p>
-    <time><%= added %></time>
+    <time datetime="<%= added.toISOString() %>"
+      ><i><%= added.toLocaleString() %></i></time
+    >
   </body>
 </html>
