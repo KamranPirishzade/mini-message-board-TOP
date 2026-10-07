@@ -4,6 +4,7 @@ import path from "path";
 import type { Request, Response, NextFunction, Express } from "express";
 import messages from "./db.ts";
 import router from "./routes/new.ts";
+import * as Sentry from "@sentry/node";
 
 const rootDir = path.join(import.meta.dirname, "..");
 
@@ -35,7 +36,17 @@ app.get(ROUTE_PATHS.message, (req: Request, res: Response) => {
   res.render("message", message);
 });
 
+app.get("/debug-sentry", () => {
+  throw new Error("My first Sentry error!");
+});
+
 app.use("/new", router);
+
+Sentry.setupExpressErrorHandler(app);
+
+app.use((err: unknown, req: Request, res: Response, next: NextFunction) => {
+  res.status(500).send("Something went wrong");
+});
 
 const PORT = Number(process.env.PORT) || 3000;
 
