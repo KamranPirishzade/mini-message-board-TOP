@@ -2,10 +2,10 @@ import express from "express";
 import dotenv from "dotenv";
 import path from "path";
 import type { Request, Response, NextFunction, Express } from "express";
-import messages from "./db.ts";
 import router from "./routes/new.ts";
 import * as Sentry from "@sentry/node";
 import messageController from "./controllers/messageController.ts";
+import db from "./db/db.ts";
 
 const rootDir = path.join(import.meta.dirname, "..");
 
@@ -24,7 +24,8 @@ app.use(express.static(path.join(rootDir, "public")));
 app.set("views", path.join(rootDir, "views"));
 app.set("view engine", "ejs");
 
-app.get(ROUTE_PATHS.main, (req: Request, res: Response) => {
+app.get(ROUTE_PATHS.main, async (req: Request, res: Response) => {
+  const messages = await db.getAllMessages();
   res.render("index", { title: "Mini Messageboard", messages: messages });
 });
 

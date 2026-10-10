@@ -1,22 +1,29 @@
 import type { Request, Response } from "express";
 import { body, matchedData, validationResult } from "express-validator";
+import db from "../db/db.ts";
 
 const validateMessage = [
   body("username")
     .trim()
     .notEmpty()
     .withMessage("Username is required")
+    .bail()
     .isAlpha("en-US", { ignore: " " })
     .withMessage("Username should only contain alphabet characters"),
   body("message")
     .trim()
     .notEmpty()
     .withMessage("Message is required")
+    .bail()
     .isLength({ max: 200 })
     .withMessage("Message must be at most 200 characters long"),
 ];
 
-function createMessage(req: Request, res: Response) {
+function getMessageForm(req: Request, res: Response) {
+  res.render("form");
+}
+
+async function createMessage(req: Request, res: Response) {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).render("form", {
@@ -26,19 +33,18 @@ function createMessage(req: Request, res: Response) {
   }
 
   const { username, message } = matchedData(req);
-
-  const newMessage = {
-    id: crypto.randomUUID(),
-    user: username,
-    text: message,
-    added: new Date(),
-  };
+  await db.addMessage(username, message);
 
   res.redirect("/");
 }
 
-function getMessageDetails(req: Request, res: Response) {
-  const message = messages.find((m) => m.id === req.params.id);
+async function getMessageDetails(req: Request, res: Response) {
+  const id = Number(req.params.id);
+  if (!Number.isInteger(id)) {
+    res.status(404).send("Message not found");
+    return;
+  }
+  const message = await db.getMessageById(id);
   if (!message) {
     res.status(404).send("Message not found");
     return;
@@ -47,6 +53,7 @@ function getMessageDetails(req: Request, res: Response) {
 }
 
 export default {
+  getMessageForm,
   getMessageDetails,
   validateMessage,
   createMessage,

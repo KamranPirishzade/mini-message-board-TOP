@@ -3,13 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><%= user %>'s message details</title>
+    <title><%= username %>'s message details</title>
   </head>
   <body>
     <%- include("header") %>
 
-    <h2><%= user %></h2>
-    <p><%= text %></p>
+    <h2><%= username %></h2>
+    <p><%= message %></p>
     <time datetime="<%= added.toISOString() %>"
       ><i><%= added.toLocaleString() %></i></time
     >

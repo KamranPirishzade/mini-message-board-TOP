@@ -5,7 +5,7 @@ const SQL = `
         id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
         username VARCHAR(255) NOT NULL,
         message VARCHAR(500) NOT NULL,
-        added TIMESTAMPZ NOT NULL DEFAULT now()
+        added TIMESTAMPTZ NOT NULL DEFAULT now()
     );
 
     INSERT INTO messages(username, message)
