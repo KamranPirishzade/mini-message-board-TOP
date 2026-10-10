@@ -37,7 +37,17 @@ function createMessage(req: Request, res: Response) {
   res.redirect("/");
 }
 
+function getMessageDetails(req: Request, res: Response) {
+  const message = messages.find((m) => m.id === req.params.id);
+  if (!message) {
+    res.status(404).send("Message not found");
+    return;
+  }
+  res.render("message", message);
+}
+
 export default {
+  getMessageDetails,
   validateMessage,
   createMessage,
 };

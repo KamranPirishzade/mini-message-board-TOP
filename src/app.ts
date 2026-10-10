@@ -5,6 +5,7 @@ import type { Request, Response, NextFunction, Express } from "express";
 import messages from "./db.ts";
 import router from "./routes/new.ts";
 import * as Sentry from "@sentry/node";
+import messageController from "./controllers/messageController.ts";
 
 const rootDir = path.join(import.meta.dirname, "..");
 
@@ -27,26 +28,19 @@ app.get(ROUTE_PATHS.main, (req: Request, res: Response) => {
   res.render("index", { title: "Mini Messageboard", messages: messages });
 });
 
-app.get(ROUTE_PATHS.message, (req: Request, res: Response) => {
-  const message = messages.find((m) => m.id === req.params.id);
-  if (!message) {
-    res.status(404).send("Message not found");
-    return;
-  }
-  res.render("message", message);
-});
+app.get(ROUTE_PATHS.message, messageController.getMessageDetails);
+
+app.use(ROUTE_PATHS.new, router);
 
 app.get("/debug-sentry", () => {
   throw new Error("My first Sentry error!");
 });
 
-app.use("/new", router);
-
 Sentry.setupExpressErrorHandler(app);
 
-// app.use((err: unknown, req: Request, res: Response, next: NextFunction) => {
-//   res.status(500).send("Something went wrong");
-// });
+app.use((err: unknown, req: Request, res: Response, next: NextFunction) => {
+  res.status(500).send("Something went wrong");
+});
 
 const PORT = Number(process.env.PORT) || 3000;
 
