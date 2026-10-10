@@ -6,7 +6,7 @@
     <title>Add new message</title>
   </head>
   <body>
-    <%- include("header") %>
+    <%- include("header")%> <%- include("partials/error")%>
     <form method="POST" action="/new">
       <label for="username">Enter username:</label>
       <input
@@ -14,6 +14,7 @@
         id="username"
         name="username"
         placeholder="John Doe"
+        value="<%= locals.values?.username ?? '' %>"
         required
       />
       <label for="message">Message:</label>
@@ -22,6 +23,7 @@
         id="message"
         name="message"
         placeholder="Hello guys"
+        value="<%= locals.values?.message ?? '' %>"
         required
       />
       <button type="submit">Send message</button>

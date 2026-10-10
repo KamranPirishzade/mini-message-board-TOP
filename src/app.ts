@@ -44,9 +44,9 @@ app.use("/new", router);
 
 Sentry.setupExpressErrorHandler(app);
 
-app.use((err: unknown, req: Request, res: Response, next: NextFunction) => {
-  res.status(500).send("Something went wrong");
-});
+// app.use((err: unknown, req: Request, res: Response, next: NextFunction) => {
+//   res.status(500).send("Something went wrong");
+// });
 
 const PORT = Number(process.env.PORT) || 3000;
 

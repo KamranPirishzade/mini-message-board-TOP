@@ -7,7 +7,8 @@
     "dev": "node --env-file-if-exists=.env --import ./src/instrument.ts --watch src/app.ts",
     "typecheck": "tsc --noEmit",
     "build": "tsc",
-    "start": "node --import ./dist/instrument.js dist/app.js"
+    "start": "node --import ./dist/instrument.js dist/app.js",
+    "seed": "node --env-file-if-exists=.env src/db/populatedb.ts"
   },
   "keywords": [],
   "author": "",
@@ -15,9 +16,13 @@
   "type": "module",
   "dependencies": {
     "@sentry/node": "^11.4.0",
+    "@types/pg": "^8.23.1",
     "dotenv": "^18.0.5",
     "ejs": "^7.0.1",
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "express-validation": "^4.1.1",
+    "express-validator": "^7.3.2",
+    "pg": "^8.23.1"
   },
   "devDependencies": {
     "@types/express": "^5.0.6",
